@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Freestyle Healing — FIDM+ MCDE Patient Intake</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --brand:#24B1B8;
+      --ink:#111827;
+      --muted:#6b7280;
+      --bg:#f5f9f9;
+      --card:#ffffff;
+      --border:#e5e7eb;
+      --accent:#0ea5e9;
+      --danger:#ef4444;
+      --ok:#22c55e;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Helvetica Neue",Arial,"Noto Sans",sans-serif}
+    a{color:var(--brand);text-decoration:none}
+    .container{max-width:1040px;margin:24px auto;padding:16px}
+    .navbar{display:flex;align-items:center;gap:14px;padding:14px 16px;border-bottom:1px solid var(--border);background:#e6fafb}
+    .navbar img{width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid #0e6066;background:#0e6066}
+    .navbar .title{font-weight:700;letter-spacing:.3px}
+    .navbar .subtitle{color:#0e6066;font-size:.9rem}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,.05);padding:20px;margin:16px 0}
+    h1{font-size:1.6rem;margin:0 0 6px;color:var(--brand)}
+    h2{font-size:1.15rem;margin:14px 0 8px}
+    h3{font-size:1rem;margin:10px 0 6px;color:#0e6066}
+    p.small{color:var(--muted);font-size:.92rem;margin-top:0}
+    fieldset{border:1px dashed var(--border);border-radius:10px;padding:12px;margin:10px 0}
+    legend{color:var(--muted);font-size:.9rem;padding:0 6px}
+    label{display:block;font-size:.95rem;margin:.25rem 0}
+    input[type="text"],input[type="date"],input[type="number"],textarea,select{
+      width:100%;padding:10px;border:1px solid var(--border);border-radius:10px;background:#fff;font-size:.95rem
+    }
+    textarea{min-height:80px;resize:vertical}
+    .row{display:grid;gap:10px}
+    .row.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .row.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .row.cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .row.cols-5{grid-template-columns:repeat(5,minmax(0,1fr))}
+    @media (max-width:900px){.row.cols-2,.row.cols-3,.row.cols-4,.row.cols-5{grid-template-columns:1fr}}
+    .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+    button{
+      appearance:none;border:none;border-radius:12px;padding:11px 16px;background:var(--brand);
+      color:#fff;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.12)
+    }
+    button.secondary{background:var(--accent)}
+    button.ghost{background:#fff;color:var(--ink);border:1px solid var(--border)}
+    .footer{text-align:center;color:var(--muted);font-size:.85rem;margin:18px 0}
+    .hero{
+      background:linear-gradient(135deg, rgba(36,177,184,.18), rgba(14,96,102,.08));
+      border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px
+    }
+    .range-row{display:grid;grid-template-columns:1fr 120px;gap:10px;align-items:center}
+    .range-row input[type="range"]{width:100%}
+    .pill{display:inline-block;padding:4px 10px;border-radius:999px;border:1px solid var(--border);margin-right:6px;margin-top:6px;font-size:.86rem;color:#0e6066;background:#f0fbfc}
+    details{border:1px solid var(--border);border-radius:12px;padding:12px;background:#fff}
+    details>summary{cursor:pointer;font-weight:600;color:#0e6066;margin:-12px;padding:12px}
+    .grid-sxs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+    @media(max-width:900px){.grid-sxs{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    .warn{color:#b91c1c;background:#fee2e2;border:1px solid #fecaca;border-radius:10px;padding:10px}
+    .ok{color:#065f46;background:#d1fae5;border:1px solid #a7f3d0;border-radius:10px;padding:10px}
+    .subtle{color:var(--muted);font-size:.9rem}
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media(max-width:900px){.two-col{grid-template-columns:1fr}}
+    .addrow{display:inline-flex;gap:8px;align-items:center;margin-top:6px}
+    .table{width:100%;border-collapse:collapse}
+    .table th,.table td{border:1px solid var(--border);padding:8px;border-radius:6px}
+    .right{ text-align:right; }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <img src="https://img1.wsimg.com/isteam/ip/c6ca7152-ea8b-443b-a132-73dd21c99535/87f27e92-b6a4-463c-acae-a80992b3be87.png/:/" alt="Freestyle Healing logo">
+    <div>
+      <div class="title">Freestyle Healing</div>
+      <div class="subtitle">Complementary &amp; Integrative Telehealth</div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="card hero">
+      <h1>Welcome — Let’s co-create your health story</h1>
+      <p class="small">This intake is conversational and simple. Choose checkboxes where you can, add a few short notes when helpful. Nothing leaves your device until you export a PDF at the end.</p>
+      <div class="actions">
+        <button id="btnSave">Save Draft</button>
+        <button class="secondary" id="btnPDF">Download PDF</button>
+        <button class="ghost" id="btnPrint">Print</button>
+        <button class="ghost" id="btnClear">Clear</button>
+      </div>
+      <p class="subtle">Tip: You can come back anytime—your draft is saved locally in this browser.</p>
+    </div>
+
+    <form id="intakeForm" class="card">
+
+      <!-- H0 Header -->
+      <h2>Header</h2>
+      <div class="row cols-3">
+        <label>Preferred name<input name="H01_Patient_Preferred" type="text" placeholder="Jordan" required /></label>
+        <label>Legal name<input name="H02_Patient_Legal" type="text" /></label>
+        <label>Date of birth<input name="H04_DOB" type="date" /></label>
+      </div>
+      <div class="row cols-3">
+        <label>MRN (if known)<input name="H03_MRN" type="text" /></label>
+        <label>Case ID (if provided)<input name="H05_Case_ID" type="text" placeholder="e.g., FIDM‑TC‑001" /></label>
+        <label>Preferred appointment time window<input name="H14_Best_Time" type="text" placeholder="e.g., 12–2 pm or after 6 pm" /></label>
+      </div>
+      <div class="row cols-3">
+        <label>Mode
+          <select name="H08_Mode">
+            <option value="">Choose…</option>
+            <option>Telehealth_AV</option><option>In_person</option>
+          </select>
+        </label>
+        <label>Provider state<input name="H09_Provider_State" type="text" placeholder="2-letter" /></label>
+        <label>Patient state<input name="H10_Patient_State" type="text" placeholder="2-letter" /></label>
+      </div>
+      <fieldset>
+        <legend>Consent & preferences</legend>
+        <div class="row cols-3">
+          <label><input type="checkbox" name="H12_Telehealth_Coaching" /> Telehealth coaching/education</label>
+          <label><input type="checkbox" name="H12_Nutrition" /> Nutrition & lifestyle guidance</label>
+          <label><input type="checkbox" name="H12_TCM" /> TCM/herbal consults</label>
+          <label><input type="checkbox" name="H12_Homeopathy" /> Homeopathy consults</label>
+          <label><input type="checkbox" name="H13_HSEM_OptIn" /> Include humanistic practices (HSEM)</label>
+          <label><input type="checkbox" name="H15_Data_Sharing" /> Allow de‑identified data for quality improvement</label>
+        </div>
+      </fieldset>
+
+      <!-- C Purpose & Goals -->
+      <h2>Your goals & what matters</h2>
+      <label>In your own words, what brings you here right now? (1–3 lines encouraged)
+        <textarea name="C1_Chief_Concern" placeholder="e.g., low energy, sleep troubles, weight creeping up…"></textarea>
+      </label>
+      <div class="row cols-3">
+        <label>Top goal #1<input name="C2_Goal1" type="text" /></label>
+        <label>Top goal #2<input name="C2_Goal2" type="text" /></label>
+        <label>Top goal #3<input name="C2_Goal3" type="text" /></label>
+      </div>
+      <label>If we met again in two weeks, what would a good step forward look like?
+        <input name="C3_Good_Outcome_2w" type="text" placeholder="e.g., falling asleep faster, less afternoon crash" />
+      </label>
+
+      <!-- D Safety Gate -->
+      <h2>Safety check</h2>
+      <p class="small">If you’re having any of the emergencies below, please seek urgent care/ER rather than completing this form.</p>
+      <div class="warn">
+        Chest pain, severe shortness of breath, stroke-like symptoms, fainting with injury, uncontrolled bleeding, black/bloody stools, severe abdominal pain with fever, high fever with confusion, rapidly spreading infection, vision loss, new suicidal/homicidal thoughts, severe allergic reaction.
+      </div>
+      <div>
+        <label><input type="radio" name="D1_Urgent" value="No" checked /> I do NOT have any of the above right now.</label>
+        <label><input type="radio" name="D1_Urgent" value="Yes" /> I DO have an urgent symptom (I will seek care now).</label>
+      </div>
+
+      <!-- B Demographics -->
+      <h2>About you</h2>
+      <div class="row cols-4">
+        <label>Sex assigned at birth<select name="B4_SexAtBirth">
+          <option value=""></option><option>female</option><option>male</option><option>intersex/prefer not</option>
+        </select></label>
+        <label>Gender identity<input name="B5_GenderID" type="text" placeholder="e.g., woman, man, nonbinary" /></label>
+        <label>Pronouns<input name="B6_Pronouns" type="text" placeholder="e.g., she/her; he/him; they/them" /></label>
+        <label>Pregnancy status<select name="B10_Pregnancy">
+          <option value=""></option><option>N/A</option><option>Trying</option><option>Pregnant</option><option>Postpartum</option>
+        </select></label>
+      </div>
+      <div class="row cols-4">
+        <label>Height (in)<input name="B7b_Height_in" type="number" min="36" max="96" step="0.5" /></label>
+        <label>Weight (lb)<input name="B8_Weight_lb" type="number" min="50" max="700" step="0.1" /></label>
+        <label>Waist (in)<input name="B9_Waist_in" type="number" min="10" max="100" step="0.1" /></label>
+        <label>BMI (auto)<input name="BMI_auto" type="text" readonly /></label>
+      </div>
+      <div class="row cols-3">
+        <label>ZIP code<input name="B15_ZIP" type="text" /></label>
+        <label>City<input name="B15_City" type="text" /></label>
+        <label>State<input name="B15_State" type="text" /></label>
+      </div>
+      <div class="row cols-2">
+        <label>Occupation<input name="B14_Occupation" type="text" placeholder="e.g., IT project manager" /></label>
+        <label>Work schedule notes<input name="B14b_Schedule" type="text" placeholder="late meetings, travel, shifts…" /></label>
+      </div>
+      <fieldset>
+        <legend>Substances</legend>
+        <div class="row cols-3">
+          <label>Tobacco<select name="B11_Tobacco">
+            <option value=""></option><option>Never</option><option>Former</option><option>Current</option>
+          </select></label>
+          <label>Pack-years (if former/current)<input name="B11_PackYears" type="number" min="0" step="0.1" /></label>
+          <label>Quit year (if former)<input name="B11_QuitYear" type="number" min="1900" max="2100" /></label>
+        </div>
+        <div class="row cols-3">
+          <label>Alcohol (drinks/week)<input name="B12_Alcohol_perWk" type="number" min="0" step="1" /></label>
+          <label>Cannabis<select name="B13_Cannabis">
+            <option value=""></option><option>None</option><option>Occasional</option><option>Regular</option>
+          </select></label>
+          <label>Other substances<input name="B13_Other" type="text" placeholder="type & how often" /></label>
+        </div>
+      </fieldset>
+
+      <!-- E Timeline & Exposures -->
+      <h2>Your story over time</h2>
+      <label>When did your main concern start, and how has it changed?
+        <textarea name="E1_Onset" placeholder="e.g., gradual over 18 months; worse the last 6 months; afternoons are hardest"></textarea>
+      </label>
+      <div class="row cols-2">
+        <label>Things that tend to make it worse<input name="E2a_Triggers" type="text" placeholder="e.g., high‑carb lunch, poor sleep, >2 drinks" /></label>
+        <label>Things that tend to help<input name="E2b_Relievers" type="text" placeholder="e.g., morning walk, protein‑forward meals" /></label>
+      </div>
+      <label>Any key events in the last 12 months? (moves, illnesses, travel, job shifts)
+        <textarea name="E3_Events"></textarea>
+      </label>
+      <fieldset>
+        <legend>Possible exposures (check any)</legend>
+        <div class="row cols-3">
+          <label><input type="checkbox" name="E4_Mold" /> Mold/water damage</label>
+          <label><input type="checkbox" name="E4_Chemicals" /> Occupational chemicals/solvents</label>
+          <label><input type="checkbox" name="E4_Pesticides" /> Pesticides</label>
+          <label><input type="checkbox" name="E4_Metals" /> Heavy metals</label>
+          <label><input type="checkbox" name="E4_Ticks" /> Tick bites</label>
+          <label><input type="checkbox" name="E4_Travel" /> Recent international travel</label>
+          <label><input type="checkbox" name="E4_Other" /> Other</label>
+        </div>
+        <label>If “Other,” briefly describe<input name="E4_OtherText" type="text" /></label>
+      </fieldset>
+
+      <!-- F Medical History & Current Regimen -->
+      <h2>Medical history & what you take (simple lists are fine)</h2>
+      <label>Diagnoses you’ve been told you have
+        <textarea name="F1_Diagnoses" placeholder="e.g., seasonal allergies, reflux, high cholesterol 2019"></textarea>
+      </label>
+      <label>Surgeries or hospital stays
+        <textarea name="F2_Surgeries" placeholder="e.g., appendectomy 2004"></textarea>
+      </label>
+      <label>Allergies or medication intolerances (include reaction)
+        <textarea name="F3_Allergies" placeholder="e.g., penicillin → rash"></textarea>
+      </label>
+
+      <details>
+        <summary>Add medications (optional table)</summary>
+        <table class="table" id="medTable">
+          <thead><tr><th>Name</th><th>Dose</th><th>How often</th><th>Why</th><th class="right">Remove</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <div class="addrow"><button type="button" class="ghost" onclick="addRow('medTable')">+ Add medication</button></div>
+      </details>
+      <details>
+        <summary>Add supplements/herbs (optional table)</summary>
+        <table class="table" id="suppTable">
+          <thead><tr><th>Name</th><th>Dose</th><th>How often</th><th>Why</th><th class="right">Remove</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <div class="addrow"><button type="button" class="ghost" onclick="addRow('suppTable')">+ Add supplement</button></div>
+      </details>
+
+      <fieldset>
+        <legend>Vaccinations (check if complete)</legend>
+        <div class="row cols-4">
+          <label><input type="checkbox" name="F7_Tdap" /> Tdap (year<input name="F7_Tdap_yr" type="number" min="1900" max="2100" style="width:90px">)</label>
+          <label><input type="checkbox" name="F7_Flu" /> Flu (last season<input name="F7_Flu_yr" type="number" min="1900" max="2100" style="width:90px">)</label>
+          <label><input type="checkbox" name="F7_COVID" /> COVID (latest<input name="F7_COVID_yr" type="number" min="1900" max="2100" style="width:90px">)</label>
+          <label><input type="checkbox" name="F7_Shingles" /> Shingles</label>
+          <label><input type="checkbox" name="F7_Pneumo" /> Pneumococcal</label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Home devices (check any you use)</legend>
+        <div class="row cols-3">
+          <label><input type="checkbox" name="F8_BP" /> Blood pressure cuff — usual at home<input name="F8_BP_avg" type="text" placeholder="e.g., 126/78" /></label>
+          <label><input type="checkbox" name="F8_Watch" /> Smartwatch — steps/day<input name="F8_Steps" type="number" min="0" /></label>
+          <label><input type="checkbox" name="F8_CPAP" /> CPAP/APAP — hours/night<input name="F8_CPAP_hours" type="number" min="0" step="0.1" /></label>
+        </div>
+      </fieldset>
+
+      <!-- G Family History -->
+      <h2>Family history (first-degree)</h2>
+      <div class="row cols-3">
+        <label>Heart disease/High blood pressure<input name="G1_Cardiac" type="text" placeholder="who + age, e.g., father MI at 54" /></label>
+        <label>Diabetes<input name="G2_Diabetes" type="text" placeholder="who + age" /></label>
+        <label>Thyroid<input name="G3_Thyroid" type="text" placeholder="who + age" /></label>
+      </div>
+      <div class="row cols-2">
+        <label>Cancers<input name="G4_Cancer" type="text" placeholder="type + age" /></label>
+        <label>Autoimmune or neuro/mental health<input name="G5_Autoimmune" type="text" placeholder="who + age" /></label>
+      </div>
+      <label>Anything else?
+        <input name="G7_Other" type="text" />
+      </label>
+
+      <!-- H HSEM -->
+      <h2>Humanistic snapshot (optional)</h2>
+      <p class="small">This part invites the “why” behind your goals. Short answers are perfect.</p>
+      <div class="row cols-2">
+        <label>Becoming — a steadier version of myself looks like…
+          <input name="H1_Becoming" type="text" />
+        </label>
+        <label>Belonging — most at home in / least safe in…
+          <input name="H2_Belonging" type="text" placeholder="e.g., morning walks; loud bars late" />
+        </label>
+      </div>
+      <div class="row cols-2">
+        <label>What matters most right now?
+          <input name="H3_MattersNow" type="text" />
+        </label>
+        <label>Non‑negotiables (values in action)
+          <input name="H4_Nonnegotiables" type="text" />
+        </label>
+      </div>
+      <fieldset>
+        <legend>Practices you like (check any)</legend>
+        <div class="row cols-3">
+          <label><input type="checkbox" name="H5_Breath" /> Breath breaks</label>
+          <label><input type="checkbox" name="H5_Mantra" /> Short mantra</label>
+          <label><input type="checkbox" name="H5_Prayer" /> Prayer</label>
+          <label><input type="checkbox" name="H5_Journaling" /> Journaling</label>
+          <label><input type="checkbox" name="H5_Movement" /> Gentle movement</label>
+          <label><input type="checkbox" name="H5_Nature" /> Nature time</label>
+        </div>
+      </fieldset>
+      <div class="row cols-5">
+        <label>BI<input name="H_BI" type="number" min="0" max="4" step="1"></label>
+        <label>PCI<input name="H_PCI" type="number" min="0" max="4" step="1"></label>
+        <label>SC‑5<input name="H_SC5" type="number" min="0" max="4" step="1"></label>
+        <label>EFI<input name="H_EFI" type="number" min="0" max="4" step="1"></label>
+        <label>PEI<input name="H_PEI" type="number" min="0" max="4" step="1"></label>
+      </div>
+      <label>One‑line reframe of your story (if you like)
+        <input name="H7_Reframe" type="text" />
+      </label>
+
+      <!-- I Lifestyle & Determinants -->
+      <h2>Daily rhythms — quick check-ins</h2>
+      <h3>Sleep</h3>
+      <div class="row cols-4">
+        <label>Usual bedtime<input name="I1_Bed" type="text" placeholder="e.g., 12:15 am" /></label>
+        <label>Usual wake time<input name="I1_Wake" type="text" placeholder="e.g., 6:30 am" /></label>
+        <label>Time to fall asleep (min)<input name="I1_Latency" type="number" min="0" /></label>
+        <label>Awakenings/night<input name="I1_Awakenings" type="number" min="0" /></label>
+      </div>
+      <div class="row cols-4">
+        <label><input type="checkbox" name="I1_Snoring" /> I’ve been told I snore</label>
+        <label><input type="checkbox" name="I1_Pauses" /> Possible breathing pauses</label>
+        <label><input type="checkbox" name="I1_MouthBreathing" /> Mouth breathing at night</label>
+        <label>CPAP/APAP<select name="I1_CPAP"><option value=""></option><option>No</option><option>Yes</option></select></label>
+      </div>
+      <div class="row cols-3">
+        <label>Sleep quality (0–4)<input name="J_Sleep" type="number" min="0" max="4" step="1" /></label>
+        <label>Average sleep hours<input name="I1_Sleep_Hours" type="number" min="0" step="0.1" /></label>
+        <label>Daytime energy (0–4)<input name="J_Energy" type="number" min="0" max="4" step="1" /></label>
+      </div>
+
+      <h3>Movement</h3>
+      <div class="row cols-4">
+        <label>Steps/day<input name="I2_Steps" type="number" min="0" /></label>
+        <label>Cardio days/week<input name="I2_CardioDays" type="number" min="0" max="7" /></label>
+        <label>Strength days/week<input name="I2_StrengthDays" type="number" min="0" max="7" /></label>
+        <label>Mobility minutes/day<input name="I2_MobilityMin" type="number" min="0" /></label>
+      </div>
+
+      <h3>Nutrition</h3>
+      <div class="row cols-4">
+        <label>Meals/day<select name="I3_MealsPerDay"><option value=""></option><option>1</option><option>2</option><option>3</option><option>4+</option></select></label>
+        <label>Plant diversity last week (# of different plants)<input name="I3_PlantDiversity" type="number" min="0" /></label>
+        <label>Ultra‑processed foods (times/day)<input name="I3_UPF_perDay" type="number" min="0" step="0.1" /></label>
+        <label>Hydration L/day<input name="I3_Hydration_L" type="number" min="0" step="0.1" /></label>
+      </div>
+      <div class="row cols-3">
+        <label>Caffeine cups/day<input name="I3_Caffeine" type="number" min="0" /></label>
+        <label>Dairy OK?<select name="I3_Dairy"><option value=""></option><option>Yes</option><option>No</option><option>Unsure</option></select></label>
+        <label>Gluten OK?<select name="I3_Gluten"><option value=""></option><option>Yes</option><option>No</option><option>Unsure</option></select></label>
+      </div>
+
+      <h3>GI & elimination</h3>
+      <div class="row cols-4">
+        <label>Stool frequency/day<input name="I4_StoolFreq" type="number" min="0" /></label>
+        <label>Bristol type<select name="I4_Bristol"><option value=""></option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option></select></label>
+        <label>Bloating after meals<select name="I4_Bloat"><option value=""></option><option>No</option><option>Yes</option></select></label>
+        <label>Heartburn episodes/week<input name="I3_HeartburnPerWk" type="number" min="0" /></label>
+      </div>
+
+      <h3>Sexual & urinary health (optional)</h3>
+      <div class="row cols-4">
+        <label>Libido (0–4)<input name="I6_Libido" type="number" min="0" max="4" step="1" /></label>
+        <label>Morning erections (if applicable, days/week)<input name="I6_MorningErections" type="number" min="0" max="7" /></label>
+        <label>Urination/day<input name="I5_UrinationPerDay" type="number" min="0" /></label>
+        <label>Night urination/night<input name="I5_UrinationNight" type="number" min="0" /></label>
+      </div>
+
+      <h3>Pain & stiffness</h3>
+      <div class="row cols-3">
+        <label>Any areas of pain? (list areas & typical 0–10)<input name="I7_PainMap" type="text" placeholder="e.g., low back 3/10 late day" /></label>
+        <label>Morning stiffness (minutes)<input name="I7_StiffnessMin" type="number" min="0" /></label>
+        <label>Recent injuries or flares?<select name="I7_Flares"><option value=""></option><option>No</option><option>Yes</option></select></label>
+      </div>
+
+      <h3>Mood & stress</h3>
+      <div class="row cols-4">
+        <label>PHQ‑2: Little interest/pleasure (0–3)<input name="I8_PHQ2_1" type="number" min="0" max="3" /></label>
+        <label>PHQ‑2: Feeling down (0–3)<input name="I8_PHQ2_2" type="number" min="0" max="3" /></label>
+        <label>GAD‑2: Feeling anxious (0–3)<input name="I8_GAD2_1" type="number" min="0" max="3" /></label>
+        <label>GAD‑2: Uncontrollable worry (0–3)<input name="I8_GAD2_2" type="number" min="0" max="3" /></label>
+      </div>
+      <div class="row cols-3">
+        <label>Stress (0–10)<input name="I8_Stress" type="number" min="0" max="10" /></label>
+        <label>Go‑to coping (check any)</label>
+        <div>
+          <label class="pill"><input type="checkbox" name="I8_Coping_Scrolling" /> Scrolling</label>
+          <label class="pill"><input type="checkbox" name="I8_Coping_Snacking" /> Late snacking</label>
+          <label class="pill"><input type="checkbox" name="I8_Coping_Breath" /> Breath</label>
+          <label class="pill"><input type="checkbox" name="I8_Coping_Walk" /> Walk</label>
+          <label class="pill"><input type="checkbox" name="I8_Coping_Talk" /> Talk with partner/friend</label>
+        </div>
+      </div>
+
+      <h3>Social determinants</h3>
+      <div class="row cols-3">
+        <label>Housing stable<select name="I9_Housing"><option value=""></option><option>Yes</option><option>No</option></select></label>
+        <label>Food security<select name="I9_Food"><option value=""></option><option>Yes</option><option>No</option></select></label>
+        <label>Finances comfortable<select name="I9_Finances"><option value=""></option><option>Yes</option><option>No</option><option>Tight</option></select></label>
+      </div>
+      <div class="row cols-3">
+        <label>Transportation reliable<select name="I9_Transport"><option value=""></option><option>Yes</option><option>No</option></select></label>
+        <label>Partner/support at home<select name="I9_Support"><option value=""></option><option>Yes</option><option>No</option></select></label>
+        <label>Any home concerns (mold, pests, safety)?<input name="I9_HomeConcerns" type="text" /></label>
+      </div>
+      <label>Oral/dental notes (last visit, bleeding gums, etc.)<input name="I10_OralDental" type="text" /></label>
+
+      <!-- J Systems Screen (0–4, full list) -->
+      <h2>Symptoms the last two weeks (0 none → 4 extreme)</h2>
+      <div class="grid-sxs">
+        <label>Energy<input name="J_Energy2" type="number" min="0" max="4" step="1" /></label>
+        <label>Unintentional weight change<input name="J_WeightChange" type="number" min="0" max="4" step="1" /></label>
+        <label>Heat/cold intolerance<input name="J_TempIntol" type="number" min="0" max="4" step="1" /></label>
+        <label>Hair/skin/nails<input name="J_HairSkin" type="number" min="0" max="4" step="1" /></label>
+        <label>Brain fog<input name="J_BrainFog2" type="number" min="0" max="4" step="1" /></label>
+        <label>Headaches<input name="J_Headache" type="number" min="0" max="4" step="1" /></label>
+
+        <label>Dizziness<input name="J_Dizziness" type="number" min="0" max="4" step="1" /></label>
+        <label>Palpitations<input name="J_Palpitations" type="number" min="0" max="4" step="1" /></label>
+        <label>Chest pain<input name="J_ChestPain" type="number" min="0" max="4" step="1" /></label>
+        <label>Shortness of breath<input name="J_SOB" type="number" min="0" max="4" step="1" /></label>
+        <label>Cough/wheeze<input name="J_CoughWheeze" type="number" min="0" max="4" step="1" /></label>
+        <label>Heartburn<input name="J_Heartburn2" type="number" min="0" max="4" step="1" /></label>
+
+        <label>Nausea<input name="J_Nausea" type="number" min="0" max="4" step="1" /></label>
+        <label>Bloating<input name="J_Bloating2" type="number" min="0" max="4" step="1" /></label>
+        <label>Constipation<input name="J_Constipation" type="number" min="0" max="4" step="1" /></label>
+        <label>Diarrhea<input name="J_Diarrhea" type="number" min="0" max="4" step="1" /></label>
+        <label>Stool change<input name="J_StoolChange" type="number" min="0" max="4" step="1" /></label>
+        <label>Joint pain<input name="J_JointPain2" type="number" min="0" max="4" step="1" /></label>
+
+        <label>Muscle pain<input name="J_MusclePain" type="number" min="0" max="4" step="1" /></label>
+        <label>Numbness/tingling<input name="J_NumbTingle" type="number" min="0" max="4" step="1" /></label>
+        <label>Balance issues<input name="J_Balance" type="number" min="0" max="4" step="1" /></label>
+        <label>Sleep quality<input name="J_Sleep2" type="number" min="0" max="4" step="1" /></label>
+        <label>Night sweats<input name="J_NightSweats" type="number" min="0" max="4" step="1" /></label>
+        <label>Easy bruising/bleeding<input name="J_Bruising" type="number" min="0" max="4" step="1" /></label>
+
+        <label>Frequent infections<input name="J_Infections" type="number" min="0" max="4" step="1" /></label>
+        <label>Allergies<input name="J_Allergies" type="number" min="0" max="4" step="1" /></label>
+        <label>Rashes<input name="J_Rashes" type="number" min="0" max="4" step="1" /></label>
+        <label>Vision/hearing changes<input name="J_VH_Changes" type="number" min="0" max="4" step="1" /></label>
+        <label>Urinary symptoms<input name="J_Urinary" type="number" min="0" max="4" step="1" /></label>
+        <label>Sexual function changes<input name="J_SexualChange2" type="number" min="0" max="4" step="1" /></label>
+      </div>
+
+      <!-- K Focused sets (optional details) -->
+      <h2>Optional focused questions (fill only if it applies to you)</h2>
+      <details>
+        <summary>Cardiometabolic</summary>
+        <div class="row cols-3">
+          <label>Home BP average (if known)<input name="K1_BP_HomeAvg" type="text" placeholder="e.g., 126/78" /></label>
+          <label>Leg swelling<select name="K1_Edema"><option value=""></option><option>None</option><option>Occasional</option></select></label>
+          <label>Stairs breathlessness<select name="K1_DyspneaStairs"><option value=""></option><option>None</option><option>Mild</option><option>Marked</option></select></label>
+        </div>
+        <label>Last known labs (if you recall them)<input name="K1_LastLabsText" type="text" placeholder="A1c, LDL, HDL, TG" /></label>
+      </details>
+
+      <details>
+        <summary>Thyroid/Endocrine</summary>
+        <div class="row cols-3">
+          <label>Neck swelling<select name="K2_NeckSwelling"><option value=""></option><option>No</option><option>Yes</option></select></label>
+          <label>Heat/cold intolerance<select name="K2_TempIntol"><option value=""></option><option>No</option><option>Yes</option></select></label>
+          <label>Recent thyroid tests<select name="K2_Tests"><option value=""></option><option>Unknown</option><option>Normal</option><option>Abnormal</option></select></label>
+        </div>
+      </details>
+
+      <details>
+        <summary>GI / Reflux</summary>
+        <div class="row cols-3">
+          <label>Heartburn per week<input name="K3_GERDperWk" type="number" min="0" /></label>
+          <label>Nighttime reflux<select name="K3_NightReflux"><option value=""></option><option>No</option><option>Yes</option></select></label>
+          <label>NSAIDs use/week<input name="K3_NSAIDs" type="number" min="0" /></label>
+        </div>
+      </details>
+
+      <details>
+        <summary>Sleep & daytime sleepiness</summary>
+        <div class="row cols-3">
+          <label>Snoring<select name="K4_Snore"><option value=""></option><option>No</option><option>Yes</option></select></label>
+          <label>Neck circumference (in)<input name="K4_Neck_in" type="number" min="0" step="0.1" /></label>
+          <label>STOP‑BANG score (if known)<input name="K4_StopBang" type="number" min="0" max="8" /></label>
+        </div>
+      </details>
+
+      <details>
+        <summary>Musculoskeletal / Pain</summary>
+        <div class="row cols-3">
+          <label>Recent trauma<select name="K5_Trauma"><option value=""></option><option>No</option><option>Yes</option></select></label>
+          <label>Fever with back pain<select name="K5_FeverBack"><option value=""></option><option>No</option><option>Yes</option></select></label>
+          <label>New weakness/numbness<select name="K5_Neurosx"><option value=""></option><option>No</option><option>Yes</option></select></label>
+        </div>
+      </details>
+
+      <details>
+        <summary>Allergy / Environment</summary>
+        <div class="row cols-3">
+          <label>Seasonal allergies<select name="K7_Seasonal"><option value=""></option><option>No</option><option>Yes</option></select></label>
+          <label>Pets at home<input name="K7_Pets" type="text" placeholder="e.g., cat, dog" /></label>
+          <label>Use HEPA filter<select name="K7_HEPA"><option value=""></option><option>No</option><option>Yes</option></select></label>
+        </div>
+      </details>
+
+      <!-- L Measurements -->
+      <h2>Recent measurements (if you have them)</h2>
+      <div class="row cols-4">
+        <label>Clinic BP<input name="L1_BP" type="text" placeholder="e.g., 138/86" /></label>
+        <label>Heart rate<input name="L1_HR" type="number" min="0" /></label>
+        <label>SpO₂ %<input name="L1_SpO2" type="number" min="0" max="100" /></label>
+        <label>Temperature °F<input name="L1_TempF" type="number" step="0.1" /></label>
+      </div>
+      <div class="row cols-4">
+        <label>Weight (today) lb<input name="L2_Weight_lb" type="number" step="0.1" /></label>
+        <label>Waist (today) in<input name="L2_Waist_in" type="number" step="0.1" /></label>
+        <label>Steps/day (watch)<input name="L3_Steps" type="number" min="0" /></label>
+        <label>Avg sleep (watch) h<input name="L3_SleepH" type="number" step="0.1" /></label>
+      </div>
+
+      <!-- N Access & Motivation -->
+      <h2>Support & capacity</h2>
+      <div class="row cols-3">
+        <label>How’s your bandwidth this month?
+          <select name="N1_Bandwidth"><option value=""></option><option>Low</option><option>Medium</option><option>High</option></select>
+        </label>
+        <label>Top barriers right now<input name="N2_Barriers" type="text" placeholder="time, finances, energy…" /></label>
+        <label>Confidence to take one small step (0–10)<input name="N3_Confidence" type="number" min="0" max="10" /></label>
+      </div>
+      <label>Coaching style you prefer
+        <select name="N4_Coaching">
+          <option value=""></option><option>Directive</option><option>Collaborative</option><option>Gentle nudge</option><option>Other</option>
+        </select>
+      </label>
+
+      <!-- O Final Checks -->
+      <h2>Final checks</h2>
+      <div class="row cols-2">
+        <label>Anything we missed?
+          <input name="O1_Missed" type="text" />
+        </label>
+        <label>Emergency contact (name & phone)
+          <input name="O2_Emergency" type="text" />
+        </label>
+      </div>
+      <label><input type="checkbox" name="O3_Ack" /> I confirm this information is accurate to my best knowledge.</label>
+
+      <div class="actions">
+        <button type="button" id="btnSave2">Save Draft</button>
+        <button type="button" class="secondary" id="btnPDF2">Download PDF</button>
+        <button type="button" class="ghost" id="btnPrint2">Print</button>
+      </div>
+      <p class="footer">© Freestyle Healing • Client-side only. No data leaves your device. You control the PDF.</p>
+    </form>
+  </div>
+
+  <!-- jsPDF -->
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script>
+    const FORM_ID = "fidm_mcde_intake_full_v1";
+    const form = document.getElementById("intakeForm");
+    const logoURL = "https://img1.wsimg.com/isteam/ip/c6ca7152-ea8b-443b-a132-73dd21c99535/87f27e92-b6a4-463c-acae-a80992b3be87.png/:/";
+
+    // Helpers
+    function val(name){ const el = form.elements[name]; return el ? (el.type === "checkbox" ? el.checked : el.value) : ""; }
+    function listChecked(names){ return names.filter(n=>val(n)).map(n=>n.replace(/^.*?_/, '').replace(/_/g,' ')).join(", "); }
+
+    // Add/remove dynamic rows
+    function addRow(tableId){
+      const tb = document.getElementById(tableId).querySelector("tbody");
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td><input type="text" name="${tableId}_name[]" /></td>
+                      <td><input type="text" name="${tableId}_dose[]" /></td>
+                      <td><input type="text" name="${tableId}_freq[]" /></td>
+                      <td><input type="text" name="${tableId}_why[]" /></td>
+                      <td class="right"><button type="button" class="ghost" onclick="this.closest('tr').remove()">Remove</button></td>`;
+      tb.appendChild(tr);
+    }
+    window.addRow = addRow;
+
+    // BMI auto-calc
+    function calcBMI(){
+      const h_in = parseFloat(val("B7b_Height_in"));
+      const w_lb = parseFloat(val("B8_Weight_lb"));
+      const out = form.elements["BMI_auto"];
+      if(!out) return;
+      if(!isNaN(h_in) && h_in>0 && !isNaN(w_lb) && w_lb>0){
+        const bmi = (w_lb / (h_in*h_in)) * 703;
+        out.value = bmi.toFixed(1);
+      } else {
+        out.value = "";
+      }
+    }
+    form.addEventListener("input", e=>{
+      if(e.target.name==="B7b_Height_in" || e.target.name==="B8_Weight_lb") calcBMI();
+    });
+    calcBMI();
+
+    function formToObject(){
+      const data = {};
+      const fd = new FormData(form);
+      // Include unchecked checkboxes explicitly as false
+      form.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        data[cb.name] = cb.checked;
+      });
+      for (const [k,v] of fd.entries()){
+        if (data.hasOwnProperty(k)) continue; // checkbox already handled
+        if (k.endsWith("[]")){
+          const key = k.slice(0,-2);
+          if(!data[key]) data[key]=[];
+          data[key].push(v);
+        } else {
+          data[k] = v;
+        }
+      }
+      return data;
+    }
+
+    function saveDraft(){
+      localStorage.setItem(FORM_ID, JSON.stringify(formToObject()));
+      alert("Draft saved locally.");
+    }
+    function loadDraft(){
+      const raw = localStorage.getItem(FORM_ID);
+      if(!raw) return;
+      try{
+        const obj = JSON.parse(raw);
+        for (const [k,v] of Object.entries(obj)){
+          const el = form.elements[k];
+          if(!el) continue;
+          if (k.endsWith("[]")){
+            // arrays for dynamic tables are not restored here
+            continue;
+          }
+          if (el.type === "checkbox"){
+            el.checked = !!v;
+          } else if (el.type === "radio"){
+            const radios = form.querySelectorAll(`input[name="${k}"][value="${v}"]`);
+            if (radios.length) radios[0].checked = true;
+          } else {
+            el.value = v;
+          }
+        }
+        calcBMI();
+      }catch(e){ console.warn("Load draft error", e); }
+    }
+    function clearAll(){
+      if(!confirm("Clear all fields?")) return;
+      form.reset();
+      localStorage.removeItem(FORM_ID);
+      // clear dynamic tables
+      ["medTable","suppTable"].forEach(id=>{
+        const tb = document.getElementById(id).querySelector("tbody"); tb.innerHTML="";
+      });
+      calcBMI();
+    }
+
+    async function getLogoDataURL(){
+      try{
+        const res = await fetch(logoURL, {mode: "cors"});
+        const blob = await res.blob();
+        return await new Promise(resolve=>{
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.readAsDataURL(blob);
+        });
+      }catch(e){
+        console.warn("Logo load failed, skipping", e);
+        return null;
+      }
+    }
+
+    function writeList(doc, margin, y, width, label, arr){
+      doc.setFontSize(11);
+      const line = label + ": " + (arr.filter(Boolean).join(" | ") || "");
+      const lines = doc.splitTextToSize(line, width);
+      doc.text(lines, margin, y);
+      return y + lines.length*14;
+    }
+
+    async function downloadPDF(){
+      const d = formToObject();
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit: "pt", format: "letter" });
+      const margin = 54;
+      let y = margin;
+      const pageW = doc.internal.pageSize.getWidth();
+      const width = pageW - margin*2;
+
+      const H = (txt)=>{ doc.setFontSize(14); doc.setTextColor(36,177,184); doc.text(txt, margin, y); y+=16; doc.setTextColor(31,41,55); };
+      const L = (k,v)=>{ doc.setFontSize(11); const line = `${k}: ${v || ""}`; const lines = doc.splitTextToSize(line, width); doc.text(lines, margin, y); y += (lines.length*14); };
+      const gap = (h=8)=>{ y += h; };
+      const ensure = (h)=>{ if (y + h > doc.internal.pageSize.getHeight() - margin){ doc.addPage(); y = margin; } };
+
+      // Header with logo
+      const logoDataURL = await getLogoDataURL();
+      if (logoDataURL){ try{ doc.addImage(logoDataURL, "PNG", margin, y-6, 36, 36); }catch(e){} }
+      doc.setFont("helvetica","bold"); doc.setFontSize(18); doc.setTextColor(36,177,184);
+      doc.text("Freestyle Healing — FIDM+ MCDE Patient Intake", margin + (logoDataURL?46:0), y+18);
+      y+=28;
+      doc.setFontSize(10); doc.setTextColor(107,114,128);
+      doc.text("Generated from the client-side MCDE intake. Field codes shown for clinical mapping.", margin, y); y+=14;
+      doc.setTextColor(31,41,55); doc.setFont("helvetica","normal");
+
+      // H0
+      H("H0 — Header");
+      L("Preferred [H0.1]", d.H01_Patient_Preferred);
+      L("Legal [H0.2]", d.H02_Patient_Legal);
+      L("DOB [H0.4]", d.H04_DOB);
+      L("MRN [H0.3]", d.H03_MRN);
+      L("Case ID [H0.5]", d.H05_Case_ID);
+      L("Best Time [H0.14]", d.H14_Best_Time);
+      L("Mode [H0.8]", d.H08_Mode);
+      L("Provider State [H0.9]", d.H09_Provider_State);
+      L("Patient State [H0.10]", d.H10_Patient_State);
+      L("Consents [H0.12/H0.13/H0.15]", ["Telehealth:"+!!d.H12_Telehealth_Coaching,"Nutrition:"+!!d.H12_Nutrition,"TCM:"+!!d.H12_TCM,"Homeopathy:"+!!d.H12_Homeopathy,"HSEM:"+!!d.H13_HSEM_OptIn,"DataShare:"+!!d.H15_Data_Sharing].join(" | ")); gap();
+
+      // C
+      ensure(16); H("C — Purpose & Goals");
+      L("Chief concern [C1]", d.C1_Chief_Concern);
+      L("Goals 90d [C2]", [d.C2_Goal1,d.C2_Goal2,d.C2_Goal3].filter(Boolean).join(" | "));
+      L("Good outcome 2w [C3]", d.C3_Good_Outcome_2w); gap();
+
+      // D
+      ensure(16); H("D — Safety");
+      L("Urgent symptoms now? [D1]", d.D1_Urgent); gap();
+
+      // B
+      ensure(16); H("B — Demographics");
+      L("Sex at birth [B4]", d.B4_SexAtBirth);
+      L("Gender identity [B5]", d.B5_GenderID);
+      L("Pronouns [B6]", d.B6_Pronouns);
+      L("Pregnancy status [B10]", d.B10_Pregnancy);
+      L("Height in [B7b]", d.B7b_Height_in);
+      L("Weight lb [B8]", d.B8_Weight_lb);
+      L("Waist in [B9]", d.B9_Waist_in);
+      L("BMI (auto)", d.BMI_auto);
+      L("ZIP/City/State [B15]", [d.B15_ZIP,d.B15_City,d.B15_State].filter(Boolean).join(" / "));
+      L("Occupation [B14]", d.B14_Occupation);
+      L("Schedule notes [B14b]", d.B14b_Schedule);
+      L("Tobacco/Quit/Pack-years [B11]", [d.B11_Tobacco, d.B11_QuitYear, d.B11_PackYears].filter(Boolean).join(" | "));
+      L("Alcohol drinks/wk [B12]", d.B12_Alcohol_perWk);
+      L("Cannabis [B13]", d.B13_Cannabis + (d.B13_Other?(" | Other: "+d.B13_Other):"")); gap();
+
+      // E
+      ensure(16); H("E — Timeline & Exposures");
+      L("Onset/Course [E1]", d.E1_Onset);
+      L("Triggers [E2a]", d.E2a_Triggers);
+      L("Relievers [E2b]", d.E2b_Relievers);
+      L("12‑mo events [E3]", d.E3_Events);
+      L("Exposures [E4]", ["Mold="+!!d.E4_Mold,"Chemicals="+!!d.E4_Chemicals,"Pesticides="+!!d.E4_Pesticides,"Metals="+!!d.E4_Metals,"Ticks="+!!d.E4_Ticks,"Travel="+!!d.E4_Travel, (d.E4_Other?"Other="+!!d.E4_Other+" ("+d.E4_OtherText+")":"")].filter(Boolean).join(" | ")); gap();
+
+      // F
+      ensure(16); H("F — History & Regimen");
+      L("Diagnoses [F1]", d.F1_Diagnoses);
+      L("Surgeries/Hosp [F2]", d.F2_Surgeries);
+      L("Allergies [F3]", d.F3_Allergies);
+      // meds table
+      const meds = (d["medTable_name"]||[]).map((_,i)=>[d["medTable_name"][i], d["medTable_dose"][i], d["medTable_freq"][i], d["medTable_why"][i]].filter(Boolean).join(" — "));
+      if(meds.length){ y = writeList(doc, margin, y, width, "Medications [F4]", meds); } else { L("Medications [F4]", ""); }
+      const supps = (d["suppTable_name"]||[]).map((_,i)=>[d["suppTable_name"][i], d["suppTable_dose"][i], d["suppTable_freq"][i], d["suppTable_why"][i]].filter(Boolean).join(" — "));
+      if(supps.length){ y = writeList(doc, margin, y, width, "Supplements/Herbs [F6]", supps); } else { L("Supplements/Herbs [F6]", ""); }
+      L("Vaccines [F7]", ["Tdap:"+!!d.F7_Tdap+"("+ (d.F7_Tdap_yr||"") +")","Flu:"+!!d.F7_Flu+"("+ (d.F7_Flu_yr||"") +")","COVID:"+!!d.F7_COVID+"("+ (d.F7_COVID_yr||"") +")","Shingles:"+!!d.F7_Shingles,"Pneumo:"+!!d.F7_Pneumo].join(" | "));
+      L("Home devices [F8]", ["BP:"+!!d.F8_BP+"("+ (d.F8_BP_avg||"") +")","Watch:"+!!d.F8_Watch+"(steps "+ (d.F8_Steps||"") +")","CPAP:"+!!d.F8_CPAP+"("+ (d.F8_CPAP_hours||"") +" h)"].join(" | ")); gap();
+
+      // G
+      ensure(16); H("G — Family History");
+      L("Cardiac [G1]", d.G1_Cardiac);
+      L("Diabetes [G2]", d.G2_Diabetes);
+      L("Thyroid [G3]", d.G3_Thyroid);
+      L("Cancers [G4]", d.G4_Cancer);
+      L("Autoimmune/Neuro/Mental [G5]", d.G5_Autoimmune);
+      L("Other [G7]", d.G7_Other); gap();
+
+      // H
+      ensure(16); H("H — HSEM");
+      L("Becoming [H1]", d.H1_Becoming);
+      L("Belonging [H2]", d.H2_Belonging);
+      L("Matters now [H3]", d.H3_MattersNow);
+      L("Non‑negotiables [H4]", d.H4_Nonnegotiables);
+      L("Practices [H5]", ["Breath="+!!d.H5_Breath,"Mantra="+!!d.H5_Mantra,"Prayer="+!!d.H5_Prayer,"Journaling="+!!d.H5_Journaling,"Movement="+!!d.H5_Movement,"Nature="+!!d.H5_Nature].join(" | "));
+      L("Indices BI/PCI/SC‑5/EFI/PEI [H_index]", [d.H_BI,d.H_PCI,d.H_SC5,d.H_EFI,d.H_PEI].filter(v=>v!=="" && v!=null).join(" / "));
+      L("Reframe [H7]", d.H7_Reframe); gap();
+
+      // I
+      ensure(16); H("I — Lifestyle & Determinants");
+      L("Sleep window [I1]", [d.I1_Bed,d.I1_Wake].filter(Boolean).join(" → "));
+      L("Latency/Awakenings [I1]", [d.I1_Latency+" min", d.I1_Awakenings+"/night"].filter(Boolean).join(" | "));
+      L("Snore/Pauses/Mouthbreathing/CPAP [I1]", ["Snore="+!!d.I1_Snoring,"Pauses="+!!d.I1_Pauses,"MouthBreathing="+!!d.I1_MouthBreathing,"CPAP="+d.I1_CPAP].join(" | "));
+      L("Sleep quality [J.Sleep] & Energy [J.Energy]", [d.J_Sleep, d.J_Energy].filter(Boolean).join(" / "));
+      L("Avg sleep hours [I1.h]", d.I1_Sleep_Hours);
+      L("Movement [I2]", ["Steps="+d.I2_Steps, "CardioDays="+d.I2_CardioDays, "StrengthDays="+d.I2_StrengthDays, "MobilityMin="+d.I2_MobilityMin].filter(Boolean).join(" | "));
+      L("Nutrition [I3]", ["Meals/day="+d.I3_MealsPerDay,"Plant diversity="+d.I3_PlantDiversity,"UPF/day="+d.I3_UPF_perDay,"Hydration L/day="+d.I3_Hydration_L,"Caffeine/day="+d.I3_Caffeine,"Dairy="+d.I3_Dairy,"Gluten="+d.I3_Gluten].filter(Boolean).join(" | "));
+      L("GI [I4]", ["Stool/day="+d.I4_StoolFreq,"Bristol="+d.I4_Bristol,"Bloat="+d.I4_Bloat,"Heartburn/wk="+d.I3_HeartburnPerWk].filter(Boolean).join(" | "));
+      L("Sexual/Urinary [I5/I6]", ["Libido="+d.I6_Libido,"AM erections/wk="+d.I6_MorningErections,"Urine/day="+d.I5_UrinationPerDay,"Urine/night="+d.I5_UrinationNight].filter(Boolean).join(" | "));
+      L("Pain map & stiffness [I7]", [d.I7_PainMap, "Stiffness "+d.I7_StiffnessMin+" min", "Flares="+d.I7_Flares].filter(Boolean).join(" | "));
+      L("Mood/Stress [I8]", ["PHQ‑2="+( (parseInt(d.I8_PHQ2_1||0)+parseInt(d.I8_PHQ2_2||0)) || "" ), "GAD‑2="+( (parseInt(d.I8_GAD2_1||0)+parseInt(d.I8_GAD2_2||0)) || "" ), "Stress="+d.I8_Stress, "Coping="+['Scrolling','Snacking','Breath','Walk','Talk'].filter((lab,i)=>[d.I8_Coping_Scrolling,d.I8_Coping_Snacking,d.I8_Coping_Breath,d.I8_Coping_Walk,d.I8_Coping_Talk][i]).join('/')].filter(Boolean).join(" | "));
+      L("Social determinants [I9]", ["Housing="+d.I9_Housing,"Food="+d.I9_Food,"Finances="+d.I9_Finances,"Transport="+d.I9_Transport,"Support="+d.I9_Support,"HomeConcerns="+d.I9_HomeConcerns].filter(Boolean).join(" | "));
+      L("Oral/dental [I10]", d.I10_OralDental); gap();
+
+      // J
+      ensure(16); H("J — Systems Screen (0–4)");
+      const jfields = ["Energy2","WeightChange","TempIntol","HairSkin","BrainFog2","Headache","Dizziness","Palpitations","ChestPain","SOB","CoughWheeze","Heartburn2","Nausea","Bloating2","Constipation","Diarrhea","StoolChange","JointPain2","MusclePain","NumbTingle","Balance","Sleep2","NightSweats","Bruising","Infections","Allergies","Rashes","VH_Changes","Urinary","SexualChange2"];
+      for (const jf of jfields){
+        const code = jf.replace("Energy2","Energy").replace("BrainFog2","BrainFog").replace("Heartburn2","Heartburn").replace("Bloating2","Bloating").replace("JointPain2","JointPain").replace("Sleep2","Sleep").replace("SexualChange2","SexualChange");
+        L(`[J.${code}]`, d["J_"+jf]);
+      }
+      gap();
+
+      // K (focused) compact
+      ensure(16); H("K — Focused Sets (as provided)");
+      L("Cardiometabolic [K1]", [d.K1_BP_HomeAvg, "Edema="+d.K1_Edema, "Dyspnea stairs="+d.K1_DyspneaStairs, "Labs="+d.K1_LastLabsText].filter(Boolean).join(" | "));
+      L("Thyroid/Endocrine [K2]", ["Neck swelling="+d.K2_NeckSwelling, "Temp intoler="+d.K2_TempIntol, "Tests="+d.K2_Tests].filter(Boolean).join(" | "));
+      L("GI/Reflux [K3]", ["GERD/wk="+d.K3_GERDperWk, "Night reflux="+d.K3_NightReflux, "NSAIDs/wk="+d.K3_NSAIDs].filter(Boolean).join(" | "));
+      L("Sleep/Daytime [K4]", ["Snore="+d.K4_Snore, "Neck in="+d.K4_Neck_in, "STOP‑BANG="+d.K4_StopBang].filter(Boolean).join(" | "));
+      L("MSK [K5]", ["Trauma="+d.K5_Trauma, "Fever back="+d.K5_FeverBack, "Neuro sx="+d.K5_Neurosx].filter(Boolean).join(" | "));
+      L("Allergy/Env [K7]", ["Seasonal="+d.K7_Seasonal, "Pets="+d.K7_Pets, "HEPA="+d.K7_HEPA].filter(Boolean).join(" | ")); gap();
+
+      // L measurements
+      ensure(16); H("L — Measurements");
+      L("Vitals [L1]", ["BP="+d.L1_BP, "HR="+d.L1_HR, "SpO2="+d.L1_SpO2, "TempF="+d.L1_TempF].filter(Boolean).join(" | "));
+      L("Anthro/Wearables [L2/L3]", ["Weight lb="+d.L2_Weight_lb,"Waist in="+d.L2_Waist_in,"Steps/day="+d.L3_Steps,"Sleep h="+d.L3_SleepH].filter(Boolean).join(" | ")); gap();
+
+      // N
+      ensure(16); H("N — Access & Motivation");
+      L("Bandwidth [N1]", d.N1_Bandwidth);
+      L("Barriers [N2]", d.N2_Barriers);
+      L("Confidence 0–10 [N3]", d.N3_Confidence);
+      L("Coaching style [N4]", d.N4_Coaching); gap();
+
+      // O
+      ensure(16); H("O — Final");
+      L("Anything missed? [O1]", d.O1_Missed);
+      L("Emergency contact [O2]", d.O2_Emergency);
+      L("Acknowledgment [O3]", d.O3_Ack ? "Yes" : "No");
+
+      const who = (d.H01_Patient_Preferred || "Patient");
+      const cid = d.H05_Case_ID ? `_${d.H05_Case_ID}` : "";
+      const fname = `FreestyleHealing_MCDE_Intake_${who.replace(/\s+/g,'_')}${cid}.pdf`;
+      doc.save(fname);
+    }
+
+    // Buttons
+    document.getElementById("btnSave").addEventListener("click", saveDraft);
+    document.getElementById("btnSave2").addEventListener("click", saveDraft);
+    document.getElementById("btnClear").addEventListener("click", clearAll);
+    document.getElementById("btnPrint").addEventListener("click", ()=>window.print());
+    document.getElementById("btnPrint2").addEventListener("click", ()=>window.print());
+    document.getElementById("btnPDF").addEventListener("click", downloadPDF);
+    document.getElementById("btnPDF2").addEventListener("click", downloadPDF);
+
+    // Load draft and calc BMI on start
+    loadDraft();
+  </script>
+</body>
+</html>
